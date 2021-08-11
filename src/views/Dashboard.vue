@@ -9,6 +9,45 @@
             <input v-model="keyword" placeholder="Select for a country ..." style="width: 100vw;"/> 
             <v-btn class="ml-auto white--text" color="#183754" @click="getDataByCountryName">Search</v-btn>
         </div>
+
+      <v-card
+        class="countries-section__card mt-10 mx-auto my-12"
+        v-if="countryData != null"
+        max-width="50%"
+        :to="'/about/' + countryData.country"
+      >
+        <v-img class="white--text align-end height=250" :src="countryData.countryInfo.flag">
+        </v-img>
+
+        <v-card-text class="countries-section__card--text">
+          <v-row>
+            <div class="title mb-2 text-center">
+              <v-card-title>{{ countryData.country }}</v-card-title>
+            </div>
+            <v-col cols-6>
+              <div class="countries-section__card--list-item">
+                <strong>Total cases:</strong> {{ countryData.cases}}
+              </div>
+              <div class="countries-section__card--list-item">
+                <strong>Total deaths:</strong> {{ countryData.deaths }}
+              </div>
+            </v-col>
+            <v-col cols-6>
+              <div class="countries-section__card--list-item">
+                <strong>Today cases:</strong> {{ countryData.todayCases}}
+              </div>
+              <div class="countries-section__card--list-item">
+                <strong>Today deaths:</strong> {{ countryData.todayDeaths }}
+              </div>
+              </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card v-else-if="countryData == null">
+        <v-card-text class="text-center">
+          There is no data to display
+        </v-card-text>
+      </v-card>
     </div>
 </template>
 <script>
@@ -22,7 +61,7 @@ export default {
   methods: {
       ...mapActions(['getCorvidData']),
       getDataByCountryName() {
-        this.getCorvidData(this.keyword);
+        return this.getCorvidData(this.keyword);
       } 
   },
   computed: {
